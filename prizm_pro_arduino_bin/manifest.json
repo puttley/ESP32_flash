@@ -1,5 +1,5 @@
 {
-    "name": "ESP Web Tool Demo",
+    "name": "Prizm Pro Firmware",
     "new_install_prompt_erase": true,
     "builds": [
       {
@@ -10,12 +10,6 @@
           { "path": "prizm_arduino_demo.ino.bootloader.bin", "offset": 4096 },
           { "path": "prizm_arduino_demo.ino.partitions.bin", "offset": 32768 }
         ]
-      },
-      {
-        "chipFamily": "ESP8266",
-        "parts": [
-          { "path": "esp8266/SerialHelloWorld.ino.bin", "offset": 0 }
-        ]
-      }
+      }      
     ]
   }
