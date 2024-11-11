@@ -5,10 +5,7 @@
       {
         "chipFamily": "ESP32",
         "parts": [
-          { "path": "boot_app0.bin", "offset": 57344 },
-          { "path": "prizm_arduino_demo.ino.bin", "offset": 65536 },
-          { "path": "prizm_arduino_demo.ino.bootloader.bin", "offset": 0 },
-          { "path": "prizm_arduino_demo.ino.partitions.bin", "offset": 32768 }
+          { "path": "merged-firmware.bin", "offset": 0 }, 
         ]
       }      
     ]
