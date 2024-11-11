@@ -1,0 +1,102 @@
+html {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+body {
+    background-color: #1f242A;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    justify-content: center;        
+    font-family: "Inter", -apple-system, "avenir next", avenir, roboto, noto, ubuntu, "helvetica neue", helvetica, sans-serif;
+}
+
+.container {
+    max-width: 30%;
+    min-width: 300px;
+    text-align: left;
+    display: block;
+    flex: 1;
+    color: #adb5bd;
+    font-size: 16px;    
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.container a,
+.container a:visited,
+.container a:hover,
+.container a:active {
+    color: #74c0fc;
+}
+
+ul {
+    text-align: left;
+    display: inline-block;
+    list-style-type: none;
+    padding: 0;
+}
+
+.radio-label {
+    display: flex;
+    align-items: flex-start;
+}
+
+.list-item {
+    padding-left: 10px;
+}
+
+.list-item h2 {
+    margin: 0;
+    padding: 0;
+}
+
+input[type="radio"] {
+    margin-top: 7px;
+    accent-color: #74c0fc;
+}
+
+input[type="radio"]:hover {
+    cursor: pointer;
+}
+
+.footer {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    color: #adb5bd;
+    padding: 10px;
+}
+
+.footer a,
+.footer a:visited,
+.footer a:hover,
+.footer a:active {
+    color: #adb5bd;
+}
+
+.invisible {
+    display: none;
+}
+
+.connect-button {
+    background-color: #74c0fc;
+    color: #1f242A;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+h1 {
+    color: #74c0fc;
+}
