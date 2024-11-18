@@ -6,7 +6,7 @@
     <title>ESP32-S3 Web Flasher</title>
 </head>
 <body>
-    <h1>ESP32-S3 Web Flasher 2</h1>
+    <h1>ESP32-S3 Web Flasher 3</h1>
     <button id="connectBtn">Connect to ESP32-S3</button>
     <input type="file" id="fileInput" accept=".bin" style="display:none;" />
     <button id="flashBtn" disabled>Flash Binary</button>
@@ -37,7 +37,7 @@
             if (!connected) {
                 try {
                     port = await navigator.serial.requestPort();
-                    await port.open({ baudRate: 115200 }); // High baud rate for ESP32-S3
+                    await port.open({ baudRate: 115200 }); // Lowered baud rate for improved stability
 
                     // Pass the console as the logger for ESPLoader
                     espTool = new ESPLoader(port, console);
@@ -78,13 +78,18 @@
             status.textContent = "Starting upload...";
 
             try {
+                // Configure block size and erase size to match Adafruit's WebSerial tool
                 await espTool.flashData(
                     fileArray,
                     0x000, // Start address for the ESP32-S3
-                    (bytesWritten, totalBytes) => {
-                        const progress = (bytesWritten / totalBytes) * 100;
-                        progressBar.value = progress;
-                        status.textContent = `Uploading... ${Math.floor(progress)}%`;
+                    {
+                        eraseSize: 0x400000, // 4MB flash size
+                        blockSize: 0x4000, // Block size set to 0x4000
+                        onProgress: (bytesWritten, totalBytes) => {
+                            const progress = (bytesWritten / totalBytes) * 100;
+                            progressBar.value = progress;
+                            status.textContent = `Uploading... ${Math.floor(progress)}%`;
+                        }
                     }
                 );
                 status.textContent = "Upload complete!";
