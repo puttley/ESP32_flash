@@ -1,18 +1,95 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>ESP32-S3 Flasher</title>
 </head>
-
 <body>
-    <h1><span style="font-family: Verdana, Geneva, sans-serif;">FingerprintDoorbell Flasher</span></h1>
-    <p><span style="text-align: start; color: rgb(0, 0, 0); font-size: medium; font-family: Verdana, Geneva, sans-serif;">This page installs FingerprintDoorbell on your ESP32 module via the brilliant ESP Web Tools (using webserial). To start the installation, connect the ESP32 module to your computer with a usb cable, click "connect", select the COM port your module is connected to and follow the instructions.</span></p>
-    <p><span style="text-align: start; color: rgb(0, 0, 0); font-size: medium; font-family: Verdana, Geneva, sans-serif;"><strong>Note: </strong>This installation method is currently only supported by Chrome, Edge or Opera browsers! No Firefox, Safari...</span></p>
-    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
-    <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
-</body>
+    <h1>ESP32-S3 Web Flasher</h1>
+    <button id="connectBtn">Connect to ESP32-S3</button>
+    <input type="file" id="fileInput" accept=".bin" style="display:none;" />
+    <button id="flashBtn" disabled>Flash Binary</button>
+    <progress id="progressBar" value="0" max="100" style="display:none;"></progress>
+    <p id="status"></p>
 
+    <script type="module">
+        import { ESPLoader } from 'https://unpkg.com/adafruit-webserial-esptool@1.0.1/dist/webserial-esptool.min.js';
+
+        let port, espTool;
+        let connected = false;
+
+        const connectBtn = document.getElementById("connectBtn");
+        const fileInput = document.getElementById("fileInput");
+        const flashBtn = document.getElementById("flashBtn");
+        const progressBar = document.getElementById("progressBar");
+        const status = document.getElementById("status");
+
+        // Update UI based on connection status
+        function updateUI() {
+            fileInput.style.display = connected ? "block" : "none";
+            flashBtn.disabled = !connected || !fileInput.files.length;
+            connectBtn.textContent = connected ? "Disconnect" : "Connect to ESP32-S3";
+        }
+
+        // Connect to ESP32-S3
+        connectBtn.addEventListener("click", async () => {
+            if (!connected) {
+                try {
+                    port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 921600 }); // Higher baud rate for ESP32-S3
+                    espTool = new ESPLoader(port);
+                    await espTool.initialize();
+                    connected = true;
+                    status.textContent = "Connected to ESP32-S3";
+                } catch (err) {
+                    status.textContent = `Connection failed: ${err.message}`;
+                }
+            } else {
+                await port.close();
+                connected = false;
+                status.textContent = "Disconnected";
+            }
+            updateUI();
+        });
+
+        // Enable flash button if a file is selected
+        fileInput.addEventListener("change", () => {
+            flashBtn.disabled = !connected || !fileInput.files.length;
+        });
+
+        // Flash the binary file to ESP32-S3
+        flashBtn.addEventListener("click", async () => {
+            if (!fileInput.files.length) {
+                alert("Please select a binary file to upload.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const fileBuffer = await file.arrayBuffer();
+            const fileArray = new Uint8Array(fileBuffer);
+
+            progressBar.style.display = "block";
+            progressBar.value = 0;
+            status.textContent = "Starting upload...";
+
+            try {
+                await espTool.flashData(
+                    fileArray,
+                    0x000, // Start address for the ESP32-S3
+                    (bytesWritten, totalBytes) => {
+                        const progress = (bytesWritten / totalBytes) * 100;
+                        progressBar.value = progress;
+                        status.textContent = `Uploading... ${Math.floor(progress)}%`;
+                    }
+                );
+                status.textContent = "Upload complete!";
+            } catch (err) {
+                status.textContent = `Upload failed: ${err.message}`;
+            } finally {
+                progressBar.style.display = "none";
+            }
+        });
+    </script>
+</body>
 </html>
