@@ -80,7 +80,7 @@
             try {
                 await espTool.flashData(
                     fileArray,
-                    0, // Start address for the ESP32-S3
+                    0x000, // Start address for the ESP32-S3
                     (bytesWritten, totalBytes) => {
                         const progress = (bytesWritten / totalBytes) * 100;
                         progressBar.value = progress;
