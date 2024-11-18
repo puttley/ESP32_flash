@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP32-S3 Flasher</title>
+    <title>ESP32-S3 Web Flasher</title>
 </head>
 <body>
     <h1>ESP32-S3 Web Flasher</h1>
@@ -14,7 +14,7 @@
     <p id="status"></p>
 
     <script type="module">
-        import { ESPLoader } from "https://cdn.jsdelivr.net/gh/adafruit/Adafruit_WebSerial_ESPTool@1.2.0/dist/web/index.js";
+        import { ESPLoader } from 'https://cdn.jsdelivr.net/gh/adafruit/Adafruit_WebSerial_ESPTool@1.2.0/dist/web/index.js';
 
         let port, espTool;
         let connected = false;
@@ -37,13 +37,17 @@
             if (!connected) {
                 try {
                     port = await navigator.serial.requestPort();
-                    await port.open({ baudRate: 921600 }); // Higher baud rate for ESP32-S3
-                    espTool = new ESPLoader(port);
+                    await port.open({ baudRate: 921600 }); // High baud rate for ESP32-S3
+
+                    // Pass the console as the logger for ESPLoader
+                    espTool = new ESPLoader(port, console);
+
                     await espTool.initialize();
                     connected = true;
                     status.textContent = "Connected to ESP32-S3";
                 } catch (err) {
                     status.textContent = `Connection failed: ${err.message}`;
+                    console.error("Connection failed:", err); // Additional logging to help debug
                 }
             } else {
                 await port.close();
