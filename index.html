@@ -6,7 +6,7 @@
     <title>ESP32-S3 Web Flasher</title>
 </head>
 <body>
-    <h1>ESP32-S3 Web Flasher 1</h1>
+    <h1>ESP32-S3 Web Flasher 2</h1>
     <button id="connectBtn">Connect to ESP32-S3</button>
     <input type="file" id="fileInput" accept=".bin" style="display:none;" />
     <button id="flashBtn" disabled>Flash Binary</button>
@@ -80,7 +80,7 @@
             try {
                 await espTool.flashData(
                     fileArray,
-                    0x0000, // Start address for the ESP32-S3
+                    0, // Start address for the ESP32-S3
                     (bytesWritten, totalBytes) => {
                         const progress = (bytesWritten / totalBytes) * 100;
                         progressBar.value = progress;
