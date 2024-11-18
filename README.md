@@ -1,2 +1,2 @@
-# ESP32_flash
-ESP32 Web Flash - demo of how to flash binary files from Arduino IDE.
+# ESP32-Webflasher
+Web Flasher for my ESP32 projecs allowing easy flashing and upgrading, with the functionality provided by ESP Web Tools.
