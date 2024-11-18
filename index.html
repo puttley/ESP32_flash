@@ -6,7 +6,7 @@
     <title>ESP32-S3 Web Flasher</title>
 </head>
 <body>
-    <h1>ESP32-S3 Web Flasher</h1>
+    <h1>ESP32-S3 Web Flasher 1</h1>
     <button id="connectBtn">Connect to ESP32-S3</button>
     <input type="file" id="fileInput" accept=".bin" style="display:none;" />
     <button id="flashBtn" disabled>Flash Binary</button>
@@ -37,7 +37,7 @@
             if (!connected) {
                 try {
                     port = await navigator.serial.requestPort();
-                    await port.open({ baudRate: 921600 }); // High baud rate for ESP32-S3
+                    await port.open({ baudRate: 115200 }); // High baud rate for ESP32-S3
 
                     // Pass the console as the logger for ESPLoader
                     espTool = new ESPLoader(port, console);
@@ -80,7 +80,7 @@
             try {
                 await espTool.flashData(
                     fileArray,
-                    0x000, // Start address for the ESP32-S3
+                    0x0000, // Start address for the ESP32-S3
                     (bytesWritten, totalBytes) => {
                         const progress = (bytesWritten / totalBytes) * 100;
                         progressBar.value = progress;
