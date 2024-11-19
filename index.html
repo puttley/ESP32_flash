@@ -6,7 +6,7 @@
     <title>ESP32-S3 Web Flasher</title>
 </head>
 <body>
-    <h1>ESP32-S3 Web Flasher 3</h1>
+    <h1>ESP32-S3 Web Flasher 4</h1>
     <button id="connectBtn">Connect to ESP32-S3</button>
     <input type="file" id="fileInput" accept=".bin" style="display:none;" />
     <button id="flashBtn" disabled>Flash Binary</button>
@@ -14,7 +14,7 @@
     <p id="status"></p>
 
     <script type="module">
-        import { ESPLoader } from 'https://cdn.jsdelivr.net/gh/adafruit/Adafruit_WebSerial_ESPTool@1.2.0/dist/web/index.js';
+        import { ESPLoader } from 'https://cdn.jsdelivr.net/gh/adafruit/Adafruit_WebSerial_ESPTool@latest/dist/web/index.js';
 
         let port, espTool;
         let connected = false;
